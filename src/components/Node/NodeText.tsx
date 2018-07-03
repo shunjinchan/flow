@@ -6,6 +6,7 @@ import {
   Editor,
   EditorState,
   getDefaultKeyBinding,
+  KeyBindingUtil,
   RichUtils
 } from 'draft-js'
 import { stateToHTML } from 'draft-js-export-html'
@@ -20,6 +21,14 @@ interface INodeTextState {
 interface INodeTextProps {
   id: string
   html: string
+}
+
+function keyBindingFn(e: React.KeyboardEvent): string | null {
+  // enter
+  if (e.keyCode === 13) {
+    return 'add-node'
+  }
+  return getDefaultKeyBinding(e)
 }
 
 export class NodeText extends React.Component<INodeTextProps, INodeTextState> {
@@ -45,6 +54,7 @@ export class NodeText extends React.Component<INodeTextProps, INodeTextState> {
             editorState={this.state.editorState}
             handleKeyCommand={this.handleKeyCommand}
             onChange={this.onChange}
+            keyBindingFn={keyBindingFn}
           />
         </div>
       </div>
@@ -68,7 +78,10 @@ export class NodeText extends React.Component<INodeTextProps, INodeTextState> {
     })
   }
 
-  private handleKeyCommand(command: DraftEditorCommand): DraftHandleValue {
+  private handleKeyCommand(command: string): DraftHandleValue {
+    if (command === 'add-node') {
+      return 'handled'
+    }
     const { editorState } = this.state
     const newState = RichUtils.handleKeyCommand(editorState, command)
     if (newState) {

@@ -4,7 +4,7 @@ import db from '../db'
 export function addNode({ html }: { html: string }): string {
   const id = shortid.generate()
   db.get('tree')
-    .push({ id, html })
+    .assign({ id, html })
     .write()
   return id
 }
@@ -16,7 +16,7 @@ export function updateNode({ id, html }: { id: string; html: string }) {
     .write()
 }
 
-export function getRootNode(): any {
+export function getTree(): any {
   if (
     !db.has('tree').value() ||
     db
@@ -24,10 +24,11 @@ export function getRootNode(): any {
       .find({ id: 'root' })
       .value() === undefined
   ) {
-    db.defaults({ tree: [{ html: '', id: 'root' }] }).write()
+    db.defaults({
+      tree: {
+        root: { html: 'Home', id: 'root', children: [], parent: '' }
+      }
+    }).write()
   }
-  return db
-    .get('tree')
-    .find({ id: 'root' })
-    .value()
+  return db.getState().tree
 }

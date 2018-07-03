@@ -1,4 +1,6 @@
 import {
+  ContentState,
+  convertFromHTML,
   DraftEditorCommand,
   DraftHandleValue,
   Editor,
@@ -6,19 +8,27 @@ import {
   getDefaultKeyBinding,
   RichUtils
 } from 'draft-js'
+import { stateToHTML } from 'draft-js-export-html'
 import * as React from 'react'
-import { addNode } from '../../services/node'
+import { updateNode } from '../../services/node'
 import { BulletButton } from '../BulletButton/BulletButton'
 
-interface IState {
+interface INodeTextState {
   editorState: EditorState
 }
 
-export class NodeText extends React.Component<{}, IState> {
+interface INodeTextProps {
+  id: string
+  html: string
+}
+
+export class NodeText extends React.Component<INodeTextProps, INodeTextState> {
   constructor(props: any) {
     super(props)
     this.state = {
-      editorState: EditorState.createEmpty()
+      editorState: this.props.html
+        ? EditorState.createWithContent(this.convertFrmHTML())
+        : EditorState.createEmpty()
     }
     this.onChange = this.onChange.bind(this)
     this.handleKeyCommand = this.handleKeyCommand.bind(this)
@@ -41,9 +51,21 @@ export class NodeText extends React.Component<{}, IState> {
     )
   }
 
+  private convertFrmHTML() {
+    const blocksFromHTML = convertFromHTML(this.props.html)
+    const state = ContentState.createFromBlockArray(
+      blocksFromHTML.contentBlocks,
+      blocksFromHTML.entityMap
+    )
+    return state
+  }
+
   private onChange(editorState: EditorState) {
     this.setState({ editorState })
-    // addNode({ text: 'hahah' })
+    updateNode({
+      html: stateToHTML(editorState.getCurrentContent()),
+      id: this.props.id
+    })
   }
 
   private handleKeyCommand(command: DraftEditorCommand): DraftHandleValue {

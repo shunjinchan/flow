@@ -1,0 +1,93 @@
+.node {
+  position: relative; }
+  .node > .node-children {
+    padding-left: 18px; }
+  .node.open > .node-children {
+    display: none; }
+  .node.draging {
+    border-radius: 5px;
+    background-color: #eee;
+    user-select: none; }
+  .node.selected {
+    background-color: #d4e8fd; }
+    .node.selected > .node-children {
+      border-left-color: transparent; }
+
+.node-children {
+  border-left: 1px solid #eee;
+  margin-left: 9px; }
+
+.node-text {
+  display: flex;
+  line-height: 20px;
+  padding-top: 3px;
+  position: relative; }
+  .node-text .simple-text {
+    flex-grow: 1; }
+    .node-text .simple-text blockquote {
+      margin: 0;
+      color: #777;
+      border-left: 3px solid #dcdcdc;
+      padding-left: 10px; }
+  .node-text .collapse-button,
+  .node-text .expand-button {
+    position: absolute;
+    left: -20px;
+    opacity: 0; }
+    .node-text .collapse-button span,
+    .node-text .expand-button span {
+      background-color: #abcdef;
+      margin-left: 10px;
+      font-size: 12px; }
+  .node-text:hover .collapse-button,
+  .node-text:hover .expand-button {
+    opacity: 1; }
+
+.simple-text .input {
+  outline: none; }
+
+.bullet-button {
+  width: 18px;
+  height: 18px;
+  margin: 1px 4px 1px 0;
+  border-radius: 12px;
+  position: relative; }
+  .bullet-button a {
+    display: block;
+    width: 18px;
+    height: 18px; }
+    .bullet-button a > i,
+    .bullet-button a > span {
+      background: url("../../assets/svg/bullet-button.svg") no-repeat;
+      border-radius: 12px;
+      width: 18px;
+      height: 18px;
+      display: block;
+      position: absolute; }
+    .bullet-button a > i {
+      content: '';
+      z-index: 2; }
+    .bullet-button a > span {
+      background-color: #aaa;
+      z-index: 1; }
+    .bullet-button a:hover > i, .bullet-button a.draging > i {
+      background-color: #aaa !important; }
+    .bullet-button a.draging {
+      position: fixed;
+      cursor: grab; }
+
+.collapse-button {
+  width: 20px;
+  height: 20px;
+  background: url("../../assets/svg/collapse-button.svg") no-repeat; }
+  .collapse-button svg {
+    stroke-width: 2;
+    stroke: #666; }
+
+.expand-button {
+  width: 20px;
+  height: 20px;
+  background: url("../../assets/svg/expand-button.svg") no-repeat; }
+  .expand-button svg {
+    stroke-width: 2;
+    stroke: #666; }

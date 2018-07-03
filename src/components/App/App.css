@@ -1,0 +1,14 @@
+html, body, .app {
+  min-height: 100%; }
+
+a:hover {
+  cursor: pointer; }
+
+html {
+  overflow-y: scroll; }
+
+body {
+  position: relative;
+  margin: 0;
+  background: #f6f6f6;
+  overflow-x: hidden; }

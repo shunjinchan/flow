@@ -1,0 +1,159 @@
+.node {
+  position: relative;
+
+  > .node-children {
+    padding-left: 18px;
+  }
+
+  &.open {
+    > .node-children {
+      display: none;
+    }
+  }
+
+  &.draging {
+    border-radius: 5px;
+    background-color: #eee;
+    user-select: none;
+  }
+
+  &.focus {
+    > .node-text {
+      // &::before {
+      //   content: '';
+      //   background-color: #eee;
+      //   height: 100%;
+      //   padding: 2px 5px 1px;
+      //   position: absolute;
+      //   top: 0;
+      //   width: 100%;
+      //   border-radius: 5px;
+      //   z-index: -1;
+      // }
+    }
+  }
+
+  &.selected {
+    background-color: #d4e8fd;
+
+    > .node-children {
+      border-left-color: transparent;
+    }
+  }
+}
+
+.node-children {
+  border-left: 1px solid #eee;
+  margin-left: 9px;
+}
+
+.node-text {
+  display: flex;
+  line-height: 20px;
+  padding-top: 3px;
+  position: relative;
+
+  .simple-text {
+    flex-grow: 1;
+
+    blockquote {
+      margin: 0;
+      color: #777;
+      border-left: 3px solid #dcdcdc;
+      padding-left: 10px;
+    }
+  }
+
+  .collapse-button,
+  .expand-button {
+    position: absolute;
+    left: -20px;
+    opacity: 0;
+    span {
+      background-color: #abcdef;
+      margin-left: 10px;
+      font-size: 12px;
+    }
+  }
+
+  &:hover {
+    .collapse-button,
+    .expand-button {
+      opacity: 1;
+    }
+  }
+}
+
+.simple-text {
+  .input {
+    outline: none;
+  }
+}
+
+.bullet-button {
+  width: 18px;
+  height: 18px;
+  margin: 1px 4px 1px 0;
+  border-radius: 12px;
+  position: relative;
+
+  a {
+    display: block;
+    width: 18px;
+    height: 18px;
+
+    > i,
+    > span {
+      background: url('../../assets/svg/bullet-button.svg') no-repeat;
+      border-radius: 12px;
+      width: 18px;
+      height: 18px;
+      display: block;
+      position: absolute;
+    }
+
+    > i {
+      content: '';
+      z-index: 2;
+    }
+
+    > span {
+      background-color: #aaa;
+      z-index: 1;
+    }
+
+    &:hover,
+    &.draging {
+      > i {
+        background-color: #aaa !important;
+      }
+    }
+
+    &.draging {
+      position: fixed;
+      cursor: grab;
+    }
+  }
+}
+
+.collapse-button {
+  width: 20px;
+  height: 20px;
+  background: url('../../assets/svg/collapse-button.svg') no-repeat;
+
+  svg {
+    stroke-width: 2;
+    stroke: #666;
+  }
+}
+
+.expand-button {
+  width: 20px;
+  height: 20px;
+  background: url('../../assets/svg/expand-button.svg') no-repeat;
+
+  svg {
+    stroke-width: 2;
+    stroke: #666;
+  }
+}

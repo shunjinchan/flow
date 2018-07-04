@@ -22,9 +22,9 @@
   line-height: 20px;
   padding-top: 3px;
   position: relative; }
-  .node-text .simple-text {
+  .node-text .simple-editor {
     flex-grow: 1; }
-    .node-text .simple-text blockquote {
+    .node-text .simple-editor blockquote {
       margin: 0;
       color: #777;
       border-left: 3px solid #dcdcdc;
@@ -43,7 +43,7 @@
   .node-text:hover .expand-button {
     opacity: 1; }
 
-.simple-text .input {
+.simple-editor .input {
   outline: none; }
 
 .bullet-button {

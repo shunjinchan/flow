@@ -6,13 +6,15 @@ import { NodeText } from './NodeText'
 interface INodeProps {
   id: string
   html: string
-  children: string[]
-  parent: string
+  childIds: string[]
+  parentId: string
+  createNode: () => string
+  addChild: (id: string, childId: string) => void
 }
 
-function NodeChildren(props: { children: string[] }) {
-  if (props.children.length > 0) {
-    const children: any = props.children.map((nodeId, index) => (
+function NodeChildren(props: { childIds: string[] }) {
+  if (props.childIds.length > 0) {
+    const children: JSX.Element[] = props.childIds.map((nodeId, index) => (
       <NodeContainer id={nodeId} />
     ))
     return <div className="node-childen">{children}</div>
@@ -21,11 +23,11 @@ function NodeChildren(props: { children: string[] }) {
 }
 
 class Node extends React.Component<INodeProps> {
-  public render() {
+  public render(): JSX.Element {
     return (
       <section className="node">
         <NodeText {...this.props} />
-        <NodeChildren {...this.props} />
+        <NodeChildren {...this.props} /> 
       </section>
     )
   }

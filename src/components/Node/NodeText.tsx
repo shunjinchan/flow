@@ -11,7 +11,7 @@ import {
 } from 'draft-js'
 import { stateToHTML } from 'draft-js-export-html'
 import * as React from 'react'
-import { updateNode } from '../../services/node'
+import { updateNode } from '../../services/node.service'
 import { BulletButton } from '../BulletButton/BulletButton'
 
 interface INodeTextState {
@@ -21,22 +21,16 @@ interface INodeTextState {
 interface INodeTextProps {
   id: string
   html: string
-}
-
-function keyBindingFn(e: React.KeyboardEvent): string | null {
-  // enter
-  if (e.keyCode === 13) {
-    return 'add-node'
-  }
-  return getDefaultKeyBinding(e)
+  createNode: () => string
+  addChild: (id: string, childId: string) => void
 }
 
 export class NodeText extends React.Component<INodeTextProps, INodeTextState> {
-  constructor(props: any) {
+  constructor(props: INodeTextProps) {
     super(props)
     this.state = {
       editorState: this.props.html
-        ? EditorState.createWithContent(this.convertFrmHTML())
+        ? EditorState.createWithContent(this.convertFromHTML())
         : EditorState.createEmpty()
     }
     this.onChange = this.onChange.bind(this)
@@ -49,19 +43,19 @@ export class NodeText extends React.Component<INodeTextProps, INodeTextState> {
         <div className="collapse-button" />
         <div className="expand-button" />
         <BulletButton />
-        <div className="simple-text">
+        <div className="simple-editor">
           <Editor
             editorState={this.state.editorState}
             handleKeyCommand={this.handleKeyCommand}
             onChange={this.onChange}
-            keyBindingFn={keyBindingFn}
+            keyBindingFn={this.keyBindingFn}
           />
         </div>
       </div>
     )
   }
 
-  private convertFrmHTML() {
+  private convertFromHTML() {
     const blocksFromHTML = convertFromHTML(this.props.html)
     const state = ContentState.createFromBlockArray(
       blocksFromHTML.contentBlocks,
@@ -72,22 +66,34 @@ export class NodeText extends React.Component<INodeTextProps, INodeTextState> {
 
   private onChange(editorState: EditorState) {
     this.setState({ editorState })
-    updateNode({
-      html: stateToHTML(editorState.getCurrentContent()),
-      id: this.props.id
-    })
+    // updateNode({
+    //   html: stateToHTML(editorState.getCurrentContent()),
+    //   id: this.props.id
+    // })
   }
 
   private handleKeyCommand(command: string): DraftHandleValue {
-    if (command === 'add-node') {
-      return 'handled'
-    }
     const { editorState } = this.state
     const newState = RichUtils.handleKeyCommand(editorState, command)
+
+    if (command === 'create-node') {
+      const childId = this.props.createNode()
+      this.props.addChild(this.props.id, childId)
+      return 'handled'
+    }
     if (newState) {
       this.onChange(newState)
       return 'handled'
     }
+
     return 'not-handled'
+  }
+
+  private keyBindingFn(e: React.KeyboardEvent): string | null {
+    // enter
+    if (e.keyCode === 13) {
+      return 'create-node'
+    }
+    return getDefaultKeyBinding(e)
   }
 }

@@ -1,13 +1,13 @@
 import * as shortid from 'shortid'
 import db from '../db'
 
-export function addNode({ html }: { html: string }): string {
-  const id = shortid.generate()
-  db.get('tree')
-    .assign({ id, html })
-    .write()
-  return id
-}
+// export function addNode({ html }: { html: string }): string {
+//   const id = shortid.generate()
+//   db.get('tree')
+//     .assign({ id, html })
+//     .write()
+//   return id
+// }
 
 export function updateNode({ id, html }: { id: string; html: string }) {
   db.get('tree')
@@ -16,7 +16,7 @@ export function updateNode({ id, html }: { id: string; html: string }) {
     .write()
 }
 
-export function getTree(): any {
+export function getTree(): {} {
   if (
     !db.has('tree').value() ||
     db
@@ -26,7 +26,7 @@ export function getTree(): any {
   ) {
     db.defaults({
       tree: {
-        root: { html: 'Home', id: 'root', children: [], parent: '' }
+        root: { html: 'Home', id: 'root', childIds: [], parentId: '' }
       }
     }).write()
   }

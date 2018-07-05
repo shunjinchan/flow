@@ -16,7 +16,7 @@ interface INodeProps {
 function NodeChildren(props: { childIds: string[] }) {
   if (props.childIds && props.childIds.length > 0) {
     const children: JSX.Element[] = props.childIds.map((nodeId, index) => (
-      <NodeContainer id={nodeId} key={nodeId} />
+      <NodeContainer id={nodeId} key={index} />
     ))
     return <div className="node-children">{children}</div>
   }

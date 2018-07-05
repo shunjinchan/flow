@@ -29,9 +29,11 @@ class NodeText extends React.Component<INodeTextProps, INodeTextState> {
   constructor(props: INodeTextProps) {
     super(props)
     this.state = {
-      editorState: this.props.text
-        ? EditorState.createWithContent(this.convertFromHTML(this.props.text))
-        : EditorState.createEmpty()
+      editorState:
+        this.props.text &&
+        convertFromHTML(this.props.text).contentBlocks !== null // 空白
+          ? EditorState.createWithContent(this.convertFromHTML(this.props.text))
+          : EditorState.createEmpty()
     }
     this.onChange = this.onChange.bind(this)
     this.handleKeyCommand = this.handleKeyCommand.bind(this)
@@ -67,7 +69,7 @@ class NodeText extends React.Component<INodeTextProps, INodeTextState> {
   private onChange(editorState: EditorState) {
     this.setState({ editorState })
     this.props.updateText(
-      this.props.id, 
+      this.props.id,
       stateToHTML(editorState.getCurrentContent())
     )
   }

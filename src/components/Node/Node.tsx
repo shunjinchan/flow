@@ -1,7 +1,7 @@
 import * as React from 'react'
 import NodeContainer from '../../containers/NodeContainer'
 import './Node.css'
-import { NodeText } from './NodeText'
+import NodeText from './NodeText'
 
 interface INodeProps {
   id: string
@@ -14,7 +14,7 @@ interface INodeProps {
 }
 
 function NodeChildren(props: { childIds: string[] }) {
-  if (props.childIds.length > 0) {
+  if (props.childIds && props.childIds.length > 0) {
     const children: JSX.Element[] = props.childIds.map((nodeId, index) => (
       <NodeContainer id={nodeId} key={nodeId} />
     ))

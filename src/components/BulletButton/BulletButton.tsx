@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-export class BulletButton extends React.Component {
+class BulletButton extends React.Component {
   public render() {
     return (
       <div className="bullet-button">
@@ -11,3 +11,5 @@ export class BulletButton extends React.Component {
     )
   }
 }
+
+export default BulletButton

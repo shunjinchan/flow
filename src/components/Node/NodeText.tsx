@@ -11,8 +11,7 @@ import {
 } from 'draft-js'
 import { stateToHTML } from 'draft-js-export-html'
 import * as React from 'react'
-import { updateNode } from '../../services/node.service'
-import { BulletButton } from '../BulletButton/BulletButton'
+import BulletButton from '../BulletButton/BulletButton'
 
 interface INodeTextState {
   editorState: EditorState
@@ -26,7 +25,7 @@ interface INodeTextProps {
   updateText: (id: string, text: string) => void
 }
 
-export class NodeText extends React.Component<INodeTextProps, INodeTextState> {
+class NodeText extends React.Component<INodeTextProps, INodeTextState> {
   constructor(props: INodeTextProps) {
     super(props)
     this.state = {
@@ -71,10 +70,6 @@ export class NodeText extends React.Component<INodeTextProps, INodeTextState> {
       this.props.id, 
       stateToHTML(editorState.getCurrentContent())
     )
-    // updateNode({
-    //   text: stateToHTML(editorState.getCurrentContent()),
-    //   id: this.props.id
-    // })
   }
 
   private handleKeyCommand(command: string): DraftHandleValue {
@@ -102,3 +97,5 @@ export class NodeText extends React.Component<INodeTextProps, INodeTextState> {
     return getDefaultKeyBinding(e)
   }
 }
+
+export default NodeText

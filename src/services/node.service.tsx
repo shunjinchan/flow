@@ -1,15 +1,14 @@
 import * as shortid from 'shortid'
 import db from '../db'
+import { INode } from '../types/node.type'
 
-export function createNode({ text }: { text: string }): string {
-  const id = shortid.generate()
+export function createNode(node: INode) {
   db.get('tree')
-    .assign({ id, text })
+    .push(node)
     .write()
-  return id
 }
 
-export function updateNode({ id, text }: { id: string; text: string }) {
+export function updateText(id: string, text: string) {
   db.get('tree')
     .find({ id })
     .assign({ id, text })
@@ -17,6 +16,9 @@ export function updateNode({ id, text }: { id: string; text: string }) {
 }
 
 export function getTree(): {} {
+  const root: INode = { text: 'Home', id: 'root', childIds: [], parentId: '' }
+  const tree = {}
+
   if (
     !db.has('tree').value() ||
     db
@@ -25,10 +27,13 @@ export function getTree(): {} {
       .value() === undefined
   ) {
     db.defaults({
-      tree: {
-        root: { text: 'Home', id: 'root', childIds: [], parentId: '' }
-      }
+      tree: [root]
     }).write()
   }
-  return db.getState().tree
+
+  db.getState().tree.forEach((node: INode) => {
+    tree[node.id] = node
+  })
+
+  return tree
 }

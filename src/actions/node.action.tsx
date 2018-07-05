@@ -2,8 +2,11 @@ export const CREATE_NODE = 'CREATE_NODE'
 export const ADD_CHILD = 'ADD_CHILD'
 export const UPDATE_TEXT = 'UPDATE_TEXT'
 
-export const createNode = (nodeId: string) => ({
+export const createNode = (nodeId: string, parentId: string) => ({
+  childIds: [],
   id: nodeId,
+  parentId: '',
+  text: '',
   type: CREATE_NODE
 })
 

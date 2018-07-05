@@ -1,12 +1,6 @@
 import { ADD_CHILD, CREATE_NODE, UPDATE_TEXT } from '../actions/node.action'
-import { IStoreState } from '../types/store'
-
-interface INode {
-  id: string
-  text: string
-  parentId: string
-  childIds: string[]
-}
+import { INode } from '../types/node.type';
+import { IStoreState } from '../types/store.type'
 
 interface IAction {
   type: string
@@ -27,7 +21,7 @@ const node = (state: INode, action: IAction): INode => {
     case ADD_CHILD:
       return {
         ...state,
-        childIds: state.childIds.concat(action.childId)
+        childIds: [...state.childIds, action.childId]
       }
     case UPDATE_TEXT:
       return {

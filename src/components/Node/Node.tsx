@@ -5,19 +5,20 @@ import { NodeText } from './NodeText'
 
 interface INodeProps {
   id: string
-  html: string
+  text: string
   childIds: string[]
   parentId: string
   createNode: () => string
   addChild: (id: string, childId: string) => void
+  updateText: (id: string, text: string) => void
 }
 
 function NodeChildren(props: { childIds: string[] }) {
   if (props.childIds.length > 0) {
     const children: JSX.Element[] = props.childIds.map((nodeId, index) => (
-      <NodeContainer id={nodeId} />
+      <NodeContainer id={nodeId} key={nodeId} />
     ))
-    return <div className="node-childen">{children}</div>
+    return <div className="node-children">{children}</div>
   }
   return null
 }

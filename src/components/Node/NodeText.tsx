@@ -20,17 +20,18 @@ interface INodeTextState {
 
 interface INodeTextProps {
   id: string
-  html: string
+  text: string
   createNode: () => string
   addChild: (id: string, childId: string) => void
+  updateText: (id: string, text: string) => void
 }
 
 export class NodeText extends React.Component<INodeTextProps, INodeTextState> {
   constructor(props: INodeTextProps) {
     super(props)
     this.state = {
-      editorState: this.props.html
-        ? EditorState.createWithContent(this.convertFromHTML())
+      editorState: this.props.text
+        ? EditorState.createWithContent(this.convertFromHTML(this.props.text))
         : EditorState.createEmpty()
     }
     this.onChange = this.onChange.bind(this)
@@ -55,8 +56,8 @@ export class NodeText extends React.Component<INodeTextProps, INodeTextState> {
     )
   }
 
-  private convertFromHTML() {
-    const blocksFromHTML = convertFromHTML(this.props.html)
+  private convertFromHTML(text: string) {
+    const blocksFromHTML = convertFromHTML(text)
     const state = ContentState.createFromBlockArray(
       blocksFromHTML.contentBlocks,
       blocksFromHTML.entityMap
@@ -66,8 +67,12 @@ export class NodeText extends React.Component<INodeTextProps, INodeTextState> {
 
   private onChange(editorState: EditorState) {
     this.setState({ editorState })
+    this.props.updateText(
+      this.props.id, 
+      stateToHTML(editorState.getCurrentContent())
+    )
     // updateNode({
-    //   html: stateToHTML(editorState.getCurrentContent()),
+    //   text: stateToHTML(editorState.getCurrentContent()),
     //   id: this.props.id
     // })
   }

@@ -1,12 +1,12 @@
 import { connect } from 'react-redux'
 import * as shortid from 'shortid'
-import { addChild, createNode } from '../actions/node.action'
+import { addChild, createNode, updateText } from '../actions/node.action'
 import Node from '../components/Node/Node'
 
 const mapStateToProps = (
   state: any,
   ownProps: { id: string }
-): { id: string; html: string; parentId: string; childIds: string[] } => {
+): { id: string; text: string; parentId: string; childIds: string[] } => {
   return {
     ...state.tree[ownProps.id]
   }
@@ -21,6 +21,9 @@ const mapDispatchToProps = (dispatch: any) => {
       const id = shortid.generate()
       dispatch(createNode(id))
       return id
+    },
+    updateText: (id: string, text: string) => {
+      dispatch(updateText(id, text))
     }
   }
 }

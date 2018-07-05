@@ -1,18 +1,18 @@
 import * as shortid from 'shortid'
 import db from '../db'
 
-// export function addNode({ html }: { html: string }): string {
-//   const id = shortid.generate()
-//   db.get('tree')
-//     .assign({ id, html })
-//     .write()
-//   return id
-// }
+export function createNode({ text }: { text: string }): string {
+  const id = shortid.generate()
+  db.get('tree')
+    .assign({ id, text })
+    .write()
+  return id
+}
 
-export function updateNode({ id, html }: { id: string; html: string }) {
+export function updateNode({ id, text }: { id: string; text: string }) {
   db.get('tree')
     .find({ id })
-    .assign({ id, html })
+    .assign({ id, text })
     .write()
 }
 
@@ -26,7 +26,7 @@ export function getTree(): {} {
   ) {
     db.defaults({
       tree: {
-        root: { html: 'Home', id: 'root', childIds: [], parentId: '' }
+        root: { text: 'Home', id: 'root', childIds: [], parentId: '' }
       }
     }).write()
   }

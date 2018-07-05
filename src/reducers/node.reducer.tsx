@@ -1,17 +1,18 @@
-import { ADD_CHILD, CREATE_NODE } from '../actions/node.action'
-import { IStoreState } from '../types/store';
+import { ADD_CHILD, CREATE_NODE, UPDATE_TEXT } from '../actions/node.action'
+import { IStoreState } from '../types/store'
 
 interface INode {
   id: string
-  html: string
+  text: string
   parentId: string
   childIds: string[]
 }
 
 interface IAction {
   type: string
-  id: string,
+  id: string
   childId: string
+  text: string
 }
 
 const node = (state: INode, action: IAction): INode => {
@@ -19,14 +20,19 @@ const node = (state: INode, action: IAction): INode => {
     case CREATE_NODE:
       return {
         childIds: [],
-        html: '',
         id: action.id,
-        parentId: ''
+        parentId: '',
+        text: ''
       }
     case ADD_CHILD:
       return {
         ...state,
         childIds: state.childIds.concat(action.childId)
+      }
+    case UPDATE_TEXT:
+      return {
+        ...state,
+        text: action.text
       }
     default:
       return state
@@ -39,7 +45,7 @@ export default (state: IStoreState, action: IAction): IStoreState => {
   if (typeof id === 'undefined') {
     return state
   }
-  
+
   return {
     ...state,
     tree: {

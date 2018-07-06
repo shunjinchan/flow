@@ -1,3 +1,4 @@
 export interface IStoreState {
-  tree: any;
+  tree: any
+  [propName: string]: any
 }

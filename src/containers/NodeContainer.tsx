@@ -3,10 +3,11 @@ import * as shortid from 'shortid'
 import { addChild, createNode, updateText } from '../actions/node.action'
 import Node from '../components/Node/Node'
 import * as nodeService from '../services/node.service'
-import { INode } from '../types/node.type';
+import { INode } from '../types/node.type'
+import { IStoreState } from '../types/store.type'
 
 const mapStateToProps = (
-  state: { tree: any },
+  state: IStoreState,
   ownProps: { id: string }
 ): INode => {
   return {
@@ -20,7 +21,7 @@ const mapDispatchToProps = (dispatch: any) => {
       dispatch(addChild(id, childId))
       nodeService.addChild(id, childId)
     },
-    createNode: (id = shortid.generate(), parentId: string) => {
+    createNode: (id: string = shortid.generate(), parentId: string) => {
       const node = createNode(id, parentId)
       dispatch(node)
       nodeService.createNode({

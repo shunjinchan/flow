@@ -26,6 +26,8 @@ interface INodeTextProps {
 }
 
 class NodeText extends React.Component<INodeTextProps, INodeTextState> {
+  private editor: React.Ref<Editor>
+
   constructor(props: INodeTextProps) {
     super(props)
     this.state = {
@@ -37,6 +39,7 @@ class NodeText extends React.Component<INodeTextProps, INodeTextState> {
     }
     this.onChange = this.onChange.bind(this)
     this.handleKeyCommand = this.handleKeyCommand.bind(this)
+    this.editor = React.createRef();
   }
 
   public render() {
@@ -51,10 +54,16 @@ class NodeText extends React.Component<INodeTextProps, INodeTextState> {
             handleKeyCommand={this.handleKeyCommand}
             onChange={this.onChange}
             keyBindingFn={this.keyBindingFn}
+            ref={this.editor}
           />
         </div>
       </div>
     )
+  }
+
+  public componentDidMount () {
+    const node = (this.editor as any).current;
+    node.focus()
   }
 
   private convertFromHTML(text: string) {

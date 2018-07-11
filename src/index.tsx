@@ -6,7 +6,7 @@ import App from './components/App/App'
 import './index.css'
 import nodeReducer from './reducers/node.reducer'
 import registerServiceWorker from './registerServiceWorker'
-import { getTree } from './services/node.service'
+import { getTree } from './services/tree.service'
 
 const tree = getTree()
 const store = createStore(

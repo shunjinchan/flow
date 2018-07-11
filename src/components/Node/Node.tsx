@@ -8,9 +8,11 @@ interface INodeProps {
   text: string
   childIds: string[]
   parentId: string
-  createNode: () => string
-  addChild: (id: string, childId: string) => void
   updateText: (id: string, text: string) => void
+  createNode: (parentid: string) => string
+  addChild: (id: string, childId: string) => void
+  removeChild: (id: string, childId: string) => void
+  destoryNode: (id: string) => void
 }
 
 function NodeChildren(props: { childIds: string[] }) {

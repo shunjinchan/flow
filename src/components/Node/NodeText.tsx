@@ -20,9 +20,12 @@ interface INodeTextState {
 interface INodeTextProps {
   id: string
   text: string
-  createNode: () => string
-  addChild: (id: string, childId: string) => void
+  parentId: string
   updateText: (id: string, text: string) => void
+  createNode: (parentid: string) => string
+  addChild: (id: string, childId: string) => void
+  removeChild: (id: string, childId: string) => void
+  destoryNode: (id: string) => void
 }
 
 class NodeText extends React.Component<INodeTextProps, INodeTextState> {
@@ -39,7 +42,8 @@ class NodeText extends React.Component<INodeTextProps, INodeTextState> {
     }
     this.onChange = this.onChange.bind(this)
     this.handleKeyCommand = this.handleKeyCommand.bind(this)
-    this.editor = React.createRef();
+    this.keyBindingFn = this.keyBindingFn.bind(this)
+    this.editor = React.createRef()
   }
 
   public render() {
@@ -61,9 +65,12 @@ class NodeText extends React.Component<INodeTextProps, INodeTextState> {
     )
   }
 
-  public componentDidMount () {
-    const node = (this.editor as any).current;
-    node.focus()
+  public componentDidMount() {
+    this.focus()
+  }
+
+  private focus() {
+    ;(this.editor as any).current.focus()
   }
 
   private convertFromHTML(text: string) {
@@ -88,9 +95,15 @@ class NodeText extends React.Component<INodeTextProps, INodeTextState> {
     const newState = RichUtils.handleKeyCommand(editorState, command)
 
     if (command === 'create-node') {
-      const childId = this.props.createNode()
-      this.props.addChild(this.props.id, childId)
+      const parentId =
+        this.props.id === 'root' ? this.props.id : this.props.parentId
+      const childId = this.props.createNode(parentId)
+      this.props.addChild(parentId, childId)
       return 'handled'
+    }
+    if (command === 'destory-node') {
+      this.props.destoryNode(this.props.id)
+      this.props.removeChild(this.props.parentId, this.props.id)
     }
     if (newState) {
       this.onChange(newState)
@@ -104,6 +117,12 @@ class NodeText extends React.Component<INodeTextProps, INodeTextState> {
     // enter
     if (e.keyCode === 13) {
       return 'create-node'
+    }
+    if (
+      e.keyCode === 8 &&
+      convertFromHTML(this.props.text).contentBlocks === null
+    ) {
+      return 'destory-node'
     }
     return getDefaultKeyBinding(e)
   }

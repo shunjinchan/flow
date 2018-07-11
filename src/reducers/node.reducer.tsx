@@ -1,5 +1,9 @@
-import { ADD_CHILD, CREATE_NODE, UPDATE_TEXT } from '../actions/node.action'
-import { INode } from '../types/node.type';
+import {
+  ADD_CHILD,
+  REMOVE_CHILD,
+  UPDATE_TEXT
+} from '../actions/node.action'
+import { INode } from '../types/node.type'
 import { IStoreState } from '../types/store.type'
 
 interface IAction {
@@ -7,17 +11,11 @@ interface IAction {
   id: string
   childId: string
   text: string
+  parentId: string
 }
 
 const node = (state: INode, action: IAction): INode => {
   switch (action.type) {
-    case CREATE_NODE:
-      return {
-        childIds: [],
-        id: action.id,
-        parentId: '',
-        text: ''
-      }
     case ADD_CHILD:
       return {
         ...state,
@@ -27,6 +25,13 @@ const node = (state: INode, action: IAction): INode => {
       return {
         ...state,
         text: action.text
+      }
+    case REMOVE_CHILD:
+      const index = state.childIds.indexOf(action.childId)
+      state.childIds.splice(index, 1)
+      return {
+        ...state,
+        childIds: [...state.childIds]
       }
     default:
       return state

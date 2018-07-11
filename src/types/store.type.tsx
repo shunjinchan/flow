@@ -1,4 +1,6 @@
+import { ITree } from './tree.type';
+
 export interface IStoreState {
-  tree: any
+  tree: ITree
   [propName: string]: any
 }

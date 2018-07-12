@@ -4,7 +4,6 @@ import {
   UPDATE_TEXT
 } from '../actions/node.action'
 import { INode } from '../types/node.type'
-import { IStoreState } from '../types/store.type'
 
 interface IAction {
   type: string
@@ -14,7 +13,7 @@ interface IAction {
   parentId: string
 }
 
-const node = (state: INode, action: IAction): INode => {
+const nodeReducer = (state: INode, action: IAction): INode => {
   switch (action.type) {
     case ADD_CHILD:
       return {
@@ -38,18 +37,4 @@ const node = (state: INode, action: IAction): INode => {
   }
 }
 
-export default (state: IStoreState, action: IAction): IStoreState => {
-  const { id } = action
-
-  if (typeof id === 'undefined') {
-    return state
-  }
-
-  return {
-    ...state,
-    tree: {
-      ...state.tree,
-      [id]: node(state.tree[id], action)
-    }
-  }
-}
+export { nodeReducer }

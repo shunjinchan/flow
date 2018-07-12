@@ -24,8 +24,7 @@ const mapDispatchToProps = (dispatch: any) => {
       nodeService.addChild(id, childId)
     },
     createNode: (parentId: string, id: string = shortid.generate()) => {
-      const node = createNode(id, parentId)
-      dispatch(node)
+      const node = dispatch(createNode(id, parentId))
       treeService.createNode({
         childIds: [],
         id: node.id,

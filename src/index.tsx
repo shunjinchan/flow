@@ -4,13 +4,13 @@ import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 import App from './components/App/App'
 import './index.css'
-import nodeReducer from './reducers/node.reducer'
+import reducer from './reducers/index.reducer'
 import registerServiceWorker from './registerServiceWorker'
 import { getTree } from './services/tree.service'
 
 const tree = getTree()
 const store = createStore(
-  nodeReducer,
+  reducer,
   {
     tree
   },

@@ -1,6 +1,5 @@
 import { CREATE_NODE, DESTORT_NODE } from '../actions/tree.action'
 import { INode } from '../types/node.type'
-import { IStoreState } from '../types/store.type'
 import { ITree } from '../types/tree.type';
 
 interface IAction {
@@ -10,7 +9,7 @@ interface IAction {
   parentId: string
 }
 
-const tree = (state: ITree, action: IAction): ITree => {
+const treeReducer = (state: ITree, action: IAction): ITree => {
   switch (action.type) {
     case DESTORT_NODE:
       delete state[action.id]
@@ -24,21 +23,12 @@ const tree = (state: ITree, action: IAction): ITree => {
         parentId: action.parentId,
         text: ''
       }
-      return Object.assign({}, state, node)
+      return Object.assign({}, state, {
+        [node.id]: node
+      })
     default:
       return state
   }
 }
 
-export default (state: IStoreState, action: IAction): IStoreState => {
-  const { id } = action
-
-  if (typeof id === 'undefined') {
-    return state
-  }
-
-  return {
-    ...state,
-    tree: tree(state.tree, action)
-  }
-}
+export { treeReducer }

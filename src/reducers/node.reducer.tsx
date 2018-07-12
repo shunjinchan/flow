@@ -21,17 +21,17 @@ const node = (state: INode, action: IAction): INode => {
         ...state,
         childIds: [...state.childIds, action.childId]
       }
-    case UPDATE_TEXT:
-      return {
-        ...state,
-        text: action.text
-      }
     case REMOVE_CHILD:
       const index = state.childIds.indexOf(action.childId)
       state.childIds.splice(index, 1)
       return {
         ...state,
         childIds: [...state.childIds]
+      }
+    case UPDATE_TEXT:
+      return {
+        ...state,
+        text: action.text
       }
     default:
       return state

@@ -1,6 +1,4 @@
-import * as shortid from 'shortid'
 import db from '../db'
-import { INode } from '../types/node.type'
 
 export function updateText(id: string, text: string) {
   db.get('tree')
@@ -10,12 +8,26 @@ export function updateText(id: string, text: string) {
 }
 
 export function addChild(id: string, childId: string) {
-  const value: any = db
+  const value = db
     .get('tree')
     .find({ id })
     .value()
-  const childIds = value.childIds
+  const childIds: string[] = (value as any).childIds
   childIds.push(childId)
+  db.get('tree')
+    .find({ id })
+    .assign({ childIds })
+    .write()
+}
+
+export function removeChild(id: string, childId: string) {
+  const value = db
+    .get('tree')
+    .find({ id })
+    .value()
+  const childIds: string[] = (value as any).childIds
+  const index = childIds.indexOf(childId)
+  childIds.splice(index, 1)
   db.get('tree')
     .find({ id })
     .assign({ childIds })

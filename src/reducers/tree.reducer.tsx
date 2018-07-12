@@ -24,10 +24,6 @@ const tree = (state: ITree, action: IAction): ITree => {
         parentId: action.parentId,
         text: ''
       }
-      // return {
-      //   ...state,
-      //   node
-      // }
       return Object.assign({}, state, node)
     default:
       return state

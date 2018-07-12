@@ -7,6 +7,8 @@
     "no-console": {
       "severity": "warning",
       "options": ["debug", "info", "log", "time", "timeEnd", "trace"]
-    }
+    },
+    "jsx-no-lambda": false,
+    "object-literal-sort-keys": false
   }
 }

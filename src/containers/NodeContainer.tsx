@@ -36,9 +36,11 @@ const mapDispatchToProps = (dispatch: any) => {
     },
     destoryNode: (id: string) => {
       dispatch(destoryNode(id))
+      treeService.destoryNode(id)
     },
     removeChild: (id: string, childId: string) => {
       dispatch(removeChild(id, childId))
+      nodeService.removeChild(id, childId)
     },
     updateText: (id: string, text: string) => {
       dispatch(updateText(id, text))

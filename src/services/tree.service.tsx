@@ -1,12 +1,6 @@
 import db from '../db'
 import { INode } from '../types/node.type'
 
-export function createNode(node: INode) {
-  db.get('tree')
-    .push(node)
-    .write()
-}
-
 export function getTree() {
   const root: INode = { text: 'Home', id: 'root', childIds: [], parentId: '' }
   const tree = {}
@@ -29,4 +23,14 @@ export function getTree() {
   })
 
   return tree
+}
+
+export function createNode(node: INode) {
+  db.get('tree')
+    .push(node)
+    .write()
+}
+
+export function destoryNode(id: string) {
+  db.get('tree').remove({ id }).write()
 }

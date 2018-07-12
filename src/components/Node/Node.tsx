@@ -8,7 +8,7 @@ interface INodeProps {
   text: string
   childIds: string[]
   parentId: string
-  updateText: (id: string, text: string) => void
+  updateText: (id: string, text: string, lazy?: boolean) => void
   createNode: (parentid: string) => string
   addChild: (id: string, childId: string) => void
   removeChild: (id: string, childId: string) => void

@@ -2,26 +2,31 @@ import * as React from 'react'
 import { Subject } from 'rxjs'
 import { filter, map } from 'rxjs/operators'
 import { convertKeyName, detectKey } from '../../modules/keyboard'
-import { IKeyboardEvent } from '../../types/editor.type'
+import { IKeyboardEvent, INodeCommand } from '../../types/editor.type'
 
 interface ISimpleEditor {
   text: string
   handleKeydownEnter?: (evt: React.KeyboardEvent) => void
   handleKeydownDelete?: (evt: React.KeyboardEvent) => void
+  handleInput?: (evt: React.FormEvent) => void
 }
 
 interface IKeyCommand {
   keys: string
   handler: ((evt: React.KeyboardEvent) => void) | undefined
+  command: INodeCommand | string
 }
 
 class SimpleEditor extends React.Component<ISimpleEditor> {
   private keyDownSubject: Subject<{}>
+  private inputSubject: Subject<{}>
 
   constructor(props: any) {
     super(props)
     this.keyDownSubject = new Subject()
-    this.handleKeyDown.call(this)
+    this.inputSubject = new Subject()
+    this.handleKeyDown()
+    this.handleInput()
   }
 
   public render() {
@@ -31,6 +36,7 @@ class SimpleEditor extends React.Component<ISimpleEditor> {
         contentEditable={true}
         dangerouslySetInnerHTML={{ __html: this.props.text }}
         onKeyDown={event => this.keyDownSubject.next(event)}
+        onInput={event => this.inputSubject.next(event)}
       />
     )
   }
@@ -39,22 +45,27 @@ class SimpleEditor extends React.Component<ISimpleEditor> {
     const keyCommand: IKeyCommand[] = [
       {
         keys: 'enter',
+        command: 'create',
         handler: this.props.handleKeydownEnter
       },
       {
         keys: 'delete',
+        command: 'destory',
         handler: this.props.handleKeydownDelete
       },
       {
         keys: 'cmd b',
+        command: 'bold',
         handler: this.handleKeydownMetaAndB
       },
       {
         keys: 'cmd u',
+        command: 'underline',
         handler: this.handleKeydownMetaAndU
       },
       {
         keys: 'cmd i',
+        command: 'italic',
         handler: this.handleKeydownMetaAndI
       }
       // {
@@ -63,19 +74,14 @@ class SimpleEditor extends React.Component<ISimpleEditor> {
       // }
     ]
     const monitor = (conf: object[], e: IKeyboardEvent) => {
-      conf.forEach(
-        (keyConf: {
-          keys: string
-          handler: (evt: React.KeyboardEvent) => void
-        }) => {
-          if (
-            detectKey(keyConf.keys, e) &&
-            typeof keyConf.handler === 'function'
-          ) {
-            keyConf.handler(e.evt)
-          }
+      conf.forEach((keyConf: IKeyCommand) => {
+        if (
+          detectKey(keyConf.keys, e) &&
+          typeof keyConf.handler === 'function'
+        ) {
+          keyConf.handler(e.evt)
         }
-      )
+      })
     }
 
     monitor(keyCommand, evt)
@@ -137,6 +143,10 @@ class SimpleEditor extends React.Component<ISimpleEditor> {
       .subscribe(evt => {
         this.registerShortcut(evt)
       })
+  }
+
+  private handleInput() {
+    this.inputSubject.subscribe(this.props.handleInput)
   }
 }
 

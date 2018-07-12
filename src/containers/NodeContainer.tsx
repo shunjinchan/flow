@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import * as shortid from 'shortid'
 import { addChild, removeChild, updateText } from '../actions/node.action'
-import { createNode, destoryNode } from '../actions/tree.action';
+import { createNode, destoryNode } from '../actions/tree.action'
 import Node from '../components/Node/Node'
 import * as nodeService from '../services/node.service'
 import * as treeService from '../services/tree.service'
@@ -41,8 +41,10 @@ const mapDispatchToProps = (dispatch: any) => {
       dispatch(removeChild(id, childId))
       nodeService.removeChild(id, childId)
     },
-    updateText: (id: string, text: string) => {
-      dispatch(updateText(id, text))
+    updateText: (id: string, text: string, lazy = true) => {
+      if (!lazy) {
+        dispatch(updateText(id, text))
+      }
       nodeService.updateText(id, text)
     }
   }

@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { IKeyBinding } from '../../types/editor.type'
 import BulletButton from '../BulletButton/BulletButton'
 import SimpleEditor from '../SimpleEditor/SimpleEditor'
 
@@ -15,6 +16,7 @@ interface INodeTextProps {
 
 interface INodeTextState {
   text: string
+  keyCommand: IKeyBinding[]
 }
 
 class NodeText extends React.Component<INodeTextProps, INodeTextState> {
@@ -27,7 +29,24 @@ class NodeText extends React.Component<INodeTextProps, INodeTextState> {
     this.handleInput = this.handleInput.bind(this)
     this.editor = React.createRef()
     this.state = {
-      text: ''
+      text: '',
+      keyCommand: [
+        {
+          keys: 'enter',
+          command: 'create',
+          handler: this.handleKeydownEnter
+        },
+        {
+          keys: 'delete',
+          command: 'destory',
+          handler: this.handleKeydownDelete
+        },
+        {
+          keys: 'tab',
+          command: 'indent-right',
+          handler: this.handleKeydownTab
+        }
+      ]
     }
   }
 
@@ -40,36 +59,47 @@ class NodeText extends React.Component<INodeTextProps, INodeTextState> {
         <div className="text-field">
           <SimpleEditor
             text={this.props.text}
-            handleKeydownEnter={this.handleKeydownEnter}
-            handleKeydownDelete={this.handleKeydownDelete}
             handleInput={this.handleInput}
+            keyCommand={this.state.keyCommand}
           />
         </div>
       </div>
     )
   }
 
+  private createNode() {
+    const parentId =
+      this.props.id === 'root' ? this.props.id : this.props.parentId
+    const childId = this.props.createNode(parentId)
+    this.props.addChild(parentId, childId)
+  }
+
+  private destoryNode() {
+    this.props.destoryNode(this.props.id)
+    this.props.removeChild(this.props.parentId, this.props.id)
+  }
+
+  private handleInput(evt: React.FormEvent) {
+    this.setState({ text: evt.currentTarget.innerHTML })
+    this.props.updateText(this.props.id, evt.currentTarget.innerHTML)
+  }
+
   private handleKeydownEnter(evt: React.KeyboardEvent) {
     evt.preventDefault()
     if (this.props.text) {
-      const parentId =
-        this.props.id === 'root' ? this.props.id : this.props.parentId
-      const childId = this.props.createNode(parentId)
-      this.props.addChild(parentId, childId)
+      this.createNode()
     }
   }
 
   private handleKeydownDelete(evt: React.KeyboardEvent) {
     if (!this.state.text) {
       evt.preventDefault()
-      this.props.destoryNode(this.props.id)
-      this.props.removeChild(this.props.parentId, this.props.id)
+      this.destoryNode()
     }
   }
 
-  private handleInput(evt: React.FormEvent) {
-    this.setState({ text: evt.currentTarget.innerHTML })
-    this.props.updateText(this.props.id, evt.currentTarget.innerHTML)
+  private handleKeydownTab(evt: React.KeyboardEvent) {
+    console.log(evt);
   }
 }
 

@@ -19,10 +19,6 @@ const mapStateToProps = (
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    addChild: (id: string, childId: string) => {
-      dispatch(addChild(id, childId))
-      nodeService.addChild(id, childId)
-    },
     createNode: (parentId: string, id: string = shortid.generate()) => {
       const node = dispatch(createNode(id, parentId))
       treeService.createNode({
@@ -36,6 +32,10 @@ const mapDispatchToProps = (dispatch: any) => {
     destoryNode: (id: string) => {
       dispatch(destoryNode(id))
       treeService.destoryNode(id)
+    },
+    addChild: (id: string, childId: string) => {
+      dispatch(addChild(id, childId))
+      nodeService.addChild(id, childId)
     },
     removeChild: (id: string, childId: string) => {
       dispatch(removeChild(id, childId))

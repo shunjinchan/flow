@@ -1,19 +1,13 @@
 import {
   ADD_CHILD,
   REMOVE_CHILD,
+  UPDATE_PARENT_ID,
   UPDATE_TEXT
 } from '../actions/node.action'
 import { INode } from '../types/node.type'
+import { IAction } from './tree.reducer';
 
-interface IAction {
-  type: string
-  id: string
-  childId: string
-  text: string
-  parentId: string
-}
-
-const nodeReducer = (state: INode, action: IAction): INode => {
+const node = (state: INode, action: IAction): INode => {
   switch (action.type) {
     case ADD_CHILD:
       return {
@@ -32,9 +26,14 @@ const nodeReducer = (state: INode, action: IAction): INode => {
         ...state,
         text: action.text
       }
+    case UPDATE_PARENT_ID:
+      return {
+        ...state,
+        parentId: action.parentId
+      }
     default:
       return state
   }
 }
 
-export { nodeReducer }
+export default node

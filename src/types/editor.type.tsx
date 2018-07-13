@@ -9,7 +9,13 @@ export interface IKeyboardEvent {
   evt: React.KeyboardEvent<HTMLDivElement>
 }
 
-export type INodeCommand =
+export interface IKeyBinding {
+  keys: string
+  handler: ((evt: React.KeyboardEvent) => void) | undefined
+  command: IEditorCommand
+}
+
+export type IEditorCommand =
   | 'create'
   | 'destory'
   | 'bold'

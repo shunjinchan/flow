@@ -28,6 +28,9 @@ class SimpleEditor extends React.Component<
     this.inputSubject = new Subject()
     this.handleKeyDown()
     this.handleInput()
+    this.handleKeydownMetaAndB = this.handleKeydownMetaAndB.bind(this)
+    this.handleKeydownMetaAndU = this.handleKeydownMetaAndU.bind(this)
+    this.handleKeydownMetaAndI = this.handleKeydownMetaAndI.bind(this)
     this.defaultKeyCommand = [
       {
         keys: 'cmd b',

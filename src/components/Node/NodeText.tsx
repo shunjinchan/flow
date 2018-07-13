@@ -24,9 +24,10 @@ class NodeText extends React.Component<INodeTextProps, INodeTextState> {
 
   constructor(props: INodeTextProps) {
     super(props)
+    this.handleInput = this.handleInput.bind(this)
     this.handleKeydownEnter = this.handleKeydownEnter.bind(this)
     this.handleKeydownDelete = this.handleKeydownDelete.bind(this)
-    this.handleInput = this.handleInput.bind(this)
+    this.handleKeydownTab = this.handleKeydownTab.bind(this)
     this.editor = React.createRef()
     this.state = {
       text: '',
@@ -99,7 +100,7 @@ class NodeText extends React.Component<INodeTextProps, INodeTextState> {
   }
 
   private handleKeydownTab(evt: React.KeyboardEvent) {
-    console.log(evt);
+    evt.preventDefault()
   }
 }
 
